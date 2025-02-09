@@ -7,10 +7,10 @@ export class SchedulePage {
   }
 
   async checkFlights() {
+    await this.flightList.first().click();
     const flightCards = await this.flightList.locator(
       '[data-js-id="flightCard"]'
     );
-    await this.flightList.first().click();
     const count = await flightCards.count();
 
     return count;
