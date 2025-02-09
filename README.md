@@ -1,6 +1,7 @@
 # Playwright Testing Project
 
-This project is a testing suite using Playwright to automate end-to-end testing for Vueling webpage.
+E2E test to get available flights on the vueling.com site on 1 June.
+
 
 ## Prerequisites
 
@@ -10,18 +11,28 @@ This project is a testing suite using Playwright to automate end-to-end testing 
 ## Installation
 
 1. Clone the repository:
-    ```sh
-    git clone <repository-url>
-    cd <repository-directory>
-    ```
+
+   ```sh
+   git clone https://github.com/fabianrc2810/playwright-vueling.git
+   ```
 
 2. Install dependencies:
-    ```sh
-    npm install
-    # or
-    yarn install
-    ```
+   ```sh
+   npm install
+   # or
+   yarn install
+   ```
 
 ## Running Tests
 
 To run the tests, use the following command:
+
+    npm run test
+    # or
+    npm run test-ui
+
+To get the report, use the following command:
+    
+    npm run test-report
+
+
