@@ -1,5 +1,3 @@
-'use strict';
-
 import { test, expect } from '@playwright/test';
 import { MainPage } from '../pages/page';
 import { SearchFlightPage } from '../pages/search';
@@ -35,34 +33,36 @@ test.describe('Vueling flight search', () => {
   });
 
   test('should find flights from Madrid to Barcelona on June 1st', async () => {
-    await vuelingHomePage.openVuelingWebPage();
+    await vuelingHomePage.open();
     const [ticketsPage] = await Promise.all([
       page.waitForEvent('popup'),
       searchFlight.search(
         data.originSearch,
         data.originResult,
         data.destinationSearch,
-        data.destinationResult
+        data.destinationResult,
+        data.monthSearch
       ),
     ]);
 
     await ticketsPage.waitForLoadState();
     const ticketsSchedulePage = new SchedulePage(ticketsPage);
 
-    const flightsAvailable = await ticketsSchedulePage.checkFlights();
+    const flightsAvailable = await ticketsSchedulePage.check();
     expect(flightsAvailable).toBeGreaterThan(0);
   });
 
   test('should navigate to booking page and find flights from Madrid to Barcelona on June 1st', async () => {
-    await bookingPage.openVuelingWebPage();
+    await bookingPage.open();
     await searchBookingPage.search(
       data.originSearch,
       data.originResult,
       data.destinationSearch,
-      data.destinationResult
+      data.destinationResult,
+      data.monthAbbreviation
     );
 
-    const flightsAvailable = await schedulePage.checkFlights();
+    const flightsAvailable = await schedulePage.check();
     expect(flightsAvailable).toBeGreaterThan(0);
   });
 });

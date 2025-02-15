@@ -1,5 +1,3 @@
-'use strict';
-
 export class SearchFlightPage {
   constructor(page) {
     this.page = page;
@@ -16,26 +14,23 @@ export class SearchFlightPage {
       .locator('#id-grid-label span:nth-child(1)')
       .nth(1);
 
+    this.dayElement = this.page.locator('#calendarDaysTable202551');
+
     this.searchButton = this.page.locator('#btnSubmitHomeSearcher');
-    // this.monthSelector = this.page.locator('.vy-date-tabs-selector_item_date');
-    // this.showflightsButton = this.page.locator(
-    //   '#reserve-button-summary-flight-angular'
-    // );
   }
 
-  async clickUntilJune() {
+  async getDate(month) {
     const MAX_ATTEMPTS = 12;
 
     for (let i = 0; i < MAX_ATTEMPTS; i++) {
       const currentMonth = (await this.monthElement.innerText()).trim();
 
-      if (currentMonth === 'Junio') {
+      if (currentMonth === month) {
         return;
       }
 
       await this.nextButtonCalendar.click();
 
-      // Espera a que el mes cambie
       await this.page.waitForFunction(
         ([prevMonth]) => {
           const current = document
@@ -49,14 +44,15 @@ export class SearchFlightPage {
       );
     }
 
-    throw new Error('Junio no encontrado después de 12 intentos');
+    throw new Error('It was not possible to find the desired month');
   }
 
   async search(
     originSearch,
     originResult,
     destinationSearch,
-    destinationResult
+    destinationResult,
+    pickMonth
   ) {
     await this.originInput.click();
     await this.originSearch.pressSequentially(originSearch);
@@ -67,9 +63,8 @@ export class SearchFlightPage {
       .click();
     await this.oneWayButton.click();
 
-    await this.clickUntilJune();
-    await this.page.bringToFront();
-
+    await this.getDate(pickMonth);
+    await this.dayElement.click();
     await this.searchButton.click();
   }
 }

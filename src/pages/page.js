@@ -5,7 +5,7 @@ export class MainPage {
     this.rejectButton = this.page.locator('#onetrust-reject-all-handler');
   }
 
-  async openVuelingWebPage() {
+  async open() {
     await this.page.goto('/');
 
     if (await this.modalCookies.isVisible()) {

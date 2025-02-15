@@ -8,7 +8,7 @@ export class BookingPage {
     });
   }
 
-  async openVuelingWebPage() {
+  async open() {
     await this.page.goto('/');
     await this.rejectButton.click();
     await this.bookLinkAccess.click();

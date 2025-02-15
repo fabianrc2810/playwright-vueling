@@ -6,7 +6,7 @@ export class SchedulePage {
     );
   }
 
-  async checkFlights() {
+  async check() {
     await this.flightList.first().click();
     const flightCards = await this.flightList.locator(
       '[data-js-id="flightCard"]'

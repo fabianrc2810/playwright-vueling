@@ -23,7 +23,8 @@ export class SearchBookingPage {
     originSearch,
     originResult,
     destinationSearch,
-    destinationResult
+    destinationResult,
+    pickMonth,
   ) {
     await this.originInput.click();
     await this.originSearch.pressSequentially(originSearch);
@@ -35,7 +36,7 @@ export class SearchBookingPage {
     await this.oneWayButton.click();
     await this.departureMonth.click();
     await this.searchButton.click();
-    await this.monthSelector.filter({ hasText: 'JUN' }).first().click();
+    await this.monthSelector.filter({ hasText: pickMonth }).first().click();
     await this.showflightsButton.click();
   }
 }
