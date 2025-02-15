@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 export class SearchFlightPage {
   constructor(page) {
@@ -11,14 +11,45 @@ export class SearchFlightPage {
       '.vy-list-dropdown_label--strong'
     );
     this.oneWayButton = this.page.locator('.vy-switch_button');
-    this.departureMonth = this.page
-      .locator('.searchbar-monthpicker_date')
-      .nth(4);
-    this.searchButton = page.locator('#btnSubmitHomeSearcher');
-    this.monthSelector = this.page.locator('.vy-date-tabs-selector_item_date');
-    this.showflightsButton = page.locator(
-      '#reserve-button-summary-flight-angular'
-    );
+    this.nextButtonCalendar = this.page.locator('#nextButtonCalendar');
+    this.monthElement = this.page
+      .locator('#id-grid-label span:nth-child(1)')
+      .nth(1);
+
+    this.searchButton = this.page.locator('#btnSubmitHomeSearcher');
+    // this.monthSelector = this.page.locator('.vy-date-tabs-selector_item_date');
+    // this.showflightsButton = this.page.locator(
+    //   '#reserve-button-summary-flight-angular'
+    // );
+  }
+
+  async clickUntilJune() {
+    const MAX_ATTEMPTS = 12;
+
+    for (let i = 0; i < MAX_ATTEMPTS; i++) {
+      const currentMonth = (await this.monthElement.innerText()).trim();
+
+      if (currentMonth === 'Junio') {
+        return;
+      }
+
+      await this.nextButtonCalendar.click();
+
+      // Espera a que el mes cambie
+      await this.page.waitForFunction(
+        ([prevMonth]) => {
+          const current = document
+            .querySelector(
+              '#id-grid-label span.ui-datepicker-month:first-child'
+            )
+            .textContent.trim();
+          return current !== prevMonth;
+        },
+        [currentMonth]
+      );
+    }
+
+    throw new Error('Junio no encontrado después de 12 intentos');
   }
 
   async search(
@@ -35,9 +66,10 @@ export class SearchFlightPage {
       .filter({ hasText: destinationResult })
       .click();
     await this.oneWayButton.click();
-    await this.departureMonth.click();
+
+    await this.clickUntilJune();
+    await this.page.bringToFront();
+
     await this.searchButton.click();
-    await this.monthSelector.filter({ hasText: 'JUN' }).first().click();
-    await this.showflightsButton.click();
   }
 }

@@ -2,5 +2,7 @@
   "originSearch": "MAD",
   "originResult": "Madrid",
   "destinationSearch": "BCN",
-  "destinationResult": "Barcelona"
+  "destinationResult": "Barcelona",
+  "monthSearch": "Junio",
+  "monthAbbreviation": "JUN"
 }
